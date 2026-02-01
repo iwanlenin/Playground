@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Code Documentation </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Code Documentation ">
+    
+    
+      <link rel="shortcut icon" href="favicon.ico">
+      <link rel="stylesheet" href="styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="styles/docfx.css">
+      <link rel="stylesheet" href="styles/main.css">
+      <meta property="docfx:navrel" content="">
+      <meta property="docfx:tocrel" content="">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="code-documentation">Code Documentation</h1>
+
+<p>Detailed documentation of the PlayGround App architecture, design patterns, and implementation details.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#architecture-overview">Architecture Overview</a></li>
+<li><a href="#design-patterns">Design Patterns</a></li>
+<li><a href="#models">Models</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#viewmodels">ViewModels</a></li>
+<li><a href="#views">Views</a></li>
+<li><a href="#database-design">Database Design</a></li>
+<li><a href="#dependency-injection">Dependency Injection</a></li>
+<li><a href="#data-flow">Data Flow</a></li>
+<li><a href="#common-patterns">Common Patterns</a></li>
+</ol>
+<hr>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<p>The PlayGround App follows the <strong>MVVM (Model-View-ViewModel)</strong> architecture pattern with clear separation of concerns:</p>
+<pre><code>???????????????????????????????????????????????????????????????????
+?                          USER INTERFACE                          ?
+?                    (Views - XAML + Code-Behind)                 ?
+???????????????????????????????????????????????????????????????????
+                         ? Binding
+                         ? Commands
+                         ?
+???????????????????????????????????????????????????????????????????
+?                      VIEW MODELS                                  ?
+?        (Business Logic + State Management)                       ?
+?                  BaseViewModel                                   ?
+?                  MainViewModel                                   ?
+???????????????????????????????????????????????????????????????????
+                         ? Calls
+                         ? Dependency Injection
+                         ?
+???????????????????????????????????????????????????????????????????
+?                        SERVICES                                   ?
+?         (Business Logic Implementation)                          ?
+?                  ICounterService                                 ?
+?                  CounterService                                  ?
+?                  DatabaseService                                 ?
+???????????????????????????????????????????????????????????????????
+                         ? Uses
+                         ?
+???????????????????????????????????????????????????????????????????
+?                         MODELS                                    ?
+?            (Data Structures + Domain Objects)                    ?
+?                  Receipt                                         ?
+?                  ReceiptItem                                     ?
+?                  CounterModel                                    ?
+???????????????????????????????????????????????????????????????????
+                         ? Persists
+                         ?
+???????????????????????????????????????????????????????????????????
+?                       DATABASE                                    ?
+?                     (SQLite)                                     ?
+???????????????????????????????????????????????????????????????????
+</code></pre>
+<hr>
+<h2 id="design-patterns">Design Patterns</h2>
+<h3 id="1-mvvm-model-view-viewmodel">1. MVVM (Model-View-ViewModel)</h3>
+<p><strong>Purpose</strong>: Separate UI logic from business logic and data access.</p>
+<p><strong>Implementation</strong>:</p>
+<ul>
+<li><strong>Model</strong>: Contains data structures (Receipt, ReceiptItem, CounterModel)</li>
+<li><strong>ViewModel</strong>: Contains state and commands (MainViewModel extends BaseViewModel)</li>
+<li><strong>View</strong>: XAML markup with data bindings</li>
+</ul>
+<p><strong>Benefits</strong>:</p>
+<ul>
+<li>Testability: ViewModels can be tested without UI</li>
+<li>Maintainability: Clear separation of concerns</li>
+<li>Reusability: ViewModels can be reused with different views</li>
+</ul>
+<h3 id="2-dependency-injection-di">2. Dependency Injection (DI)</h3>
+<p><strong>Purpose</strong>: Manage object dependencies and promote loose coupling.</p>
+<p><strong>Implementation</strong>:</p>
+<pre><code class="lang-csharp">// In MauiProgram.cs
+builder.Services.AddSingleton&lt;ICounterService, CounterService&gt;();
+builder.Services.AddSingleton&lt;MainViewModel&gt;();
+</code></pre>
+<p><strong>Benefits</strong>:</p>
+<ul>
+<li>Loose coupling between classes</li>
+<li>Easy testing with mock implementations</li>
+<li>Centralized service configuration</li>
+</ul>
+<h3 id="3-repository-pattern-via-databaseservice">3. Repository Pattern (via DatabaseService)</h3>
+<p><strong>Purpose</strong>: Abstract database access logic.</p>
+<p><strong>Implementation</strong>:</p>
+<ul>
+<li><code>DatabaseService</code> handles all CRUD operations</li>
+<li>Services don't know about SQLite implementation details</li>
+<li>Easy to switch database providers</li>
+</ul>
+<h3 id="4-service-locator-pattern">4. Service Locator Pattern</h3>
+<p><strong>Purpose</strong>: Resolve dependencies at runtime.</p>
+<p><strong>Implementation</strong>:</p>
+<pre><code class="lang-csharp">// In MainPage.xaml.cs
+var vm = MauiProgram.Services?.GetService&lt;MainViewModel&gt;();
+BindingContext = vm;
+</code></pre>
+<hr>
+<h2 id="models">Models</h2>
+<h3 id="receipt-model">Receipt Model</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/Models/Receipt.cs</code></p>
+<p><strong>Purpose</strong>: Represents a purchase receipt entity.</p>
+<p><strong>Properties</strong>:</p>
+<ul>
+<li><code>Id</code> (int): Primary key, auto-incremented</li>
+<li><code>StoreName</code> (string): Name of the store</li>
+<li><code>PurchaseDate</code> (DateTime): When the purchase was made</li>
+<li><code>ImagePath</code> (string): Path to receipt image</li>
+<li><code>CreatedAt</code> (DateTime): When record was created (UTC)</li>
+<li><code>Items</code> (List<receiptitem>): Navigation property for child items</receiptitem></li>
+</ul>
+<p><strong>Database Table</strong>: <code>Receipts</code></p>
+<p><strong>Example Usage</strong>:</p>
+<pre><code class="lang-csharp">var receipt = new Receipt
+{
+    StoreName = &quot;SuperMart&quot;,
+    PurchaseDate = DateTime.Now,
+    ImagePath = &quot;/images/receipt.jpg&quot;,
+    CreatedAt = DateTime.UtcNow
+};
+</code></pre>
+<h3 id="receiptitem-model">ReceiptItem Model</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/Models/ReceiptItem.cs</code></p>
+<p><strong>Purpose</strong>: Represents an individual item on a receipt.</p>
+<p><strong>Properties</strong>:</p>
+<ul>
+<li><code>Id</code> (int): Primary key, auto-incremented</li>
+<li><code>ReceiptId</code> (int): Foreign key to Receipt (indexed)</li>
+<li><code>ProductName</code> (string): Name of the product</li>
+<li><code>Price</code> (decimal): Price of the product</li>
+<li><code>Category</code> (string): Product category</li>
+<li><code>Quantity</code> (int): Quantity purchased (default: 1)</li>
+<li><code>Receipt</code> (Receipt): Navigation property back to parent</li>
+</ul>
+<p><strong>Database Table</strong>: <code>ReceiptItems</code></p>
+<p><strong>Relationships</strong>:</p>
+<ul>
+<li>Many-to-One with Receipt (ReceiptId foreign key)</li>
+</ul>
+<p><strong>Example Usage</strong>:</p>
+<pre><code class="lang-csharp">var item = new ReceiptItem
+{
+    ReceiptId = 1,
+    ProductName = &quot;Milk&quot;,
+    Price = 3.99m,
+    Category = &quot;Dairy&quot;,
+    Quantity = 2
+};
+</code></pre>
+<h3 id="countermodel">CounterModel</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/Models/CounterModel.cs</code></p>
+<p><strong>Purpose</strong>: Simple model holding counter value.</p>
+<p><strong>Properties</strong>:</p>
+<ul>
+<li><code>Count</code> (int): Current counter value</li>
+</ul>
+<p><strong>Example Usage</strong>:</p>
+<pre><code class="lang-csharp">var counter = new CounterModel { Count = 5 };
+</code></pre>
+<hr>
+<h2 id="services">Services</h2>
+<h3 id="icounterservice-interface">ICounterService Interface</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/Services/ICounterService.cs</code></p>
+<p><strong>Purpose</strong>: Defines contract for counter operations.</p>
+<p><strong>Methods</strong>:</p>
+<ul>
+<li><code>int GetCount()</code>: Returns current count</li>
+<li><code>void IncrementCount()</code>: Increments counter by 1</li>
+</ul>
+<h3 id="counterservice-implementation">CounterService Implementation</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/Services/CounterService.cs</code></p>
+<p><strong>Purpose</strong>: Implements counter business logic.</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Manages internal <code>CounterModel</code> instance</li>
+<li>Handles counter increment logic</li>
+<li>Single responsibility: only counter operations</li>
+</ul>
+<p><strong>Example Usage</strong>:</p>
+<pre><code class="lang-csharp">var counterService = new CounterService();
+counterService.IncrementCount();
+int count = counterService.GetCount(); // 1
+</code></pre>
+<h3 id="databaseservice">DatabaseService</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/Services/DatabaseService.cs</code></p>
+<p><strong>Purpose</strong>: Manages all database operations for Receipt and ReceiptItem.</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Async/await operations for performance</li>
+<li>Transactional support for data consistency</li>
+<li>CRUD operations for both entities</li>
+<li>One-to-many relationship management</li>
+</ul>
+<p><strong>Methods</strong>:</p>
+<h4 id="receipt-operations">Receipt Operations</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetReceiptsAsync()</code></td>
+<td>Get all receipts ordered by creation date</td>
+</tr>
+<tr>
+<td><code>GetReceiptAsync(id)</code></td>
+<td>Get single receipt by ID</td>
+</tr>
+<tr>
+<td><code>GetReceiptWithItemsAsync(id)</code></td>
+<td>Get receipt with all items populated</td>
+</tr>
+<tr>
+<td><code>SaveReceiptAsync(receipt)</code></td>
+<td>Insert new or update existing receipt</td>
+</tr>
+<tr>
+<td><code>DeleteReceiptAsync(id)</code></td>
+<td>Delete receipt by ID</td>
+</tr>
+</tbody>
+</table>
+<h4 id="receiptitem-operations">ReceiptItem Operations</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetReceiptItemsAsync(receiptId)</code></td>
+<td>Get all items for a receipt</td>
+</tr>
+<tr>
+<td><code>SaveReceiptItemAsync(item)</code></td>
+<td>Insert new or update existing item</td>
+</tr>
+<tr>
+<td><code>DeleteReceiptItemAsync(id)</code></td>
+<td>Delete item by ID</td>
+</tr>
+</tbody>
+</table>
+<h4 id="transactional-operations">Transactional Operations</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SaveReceiptWithItemsAsync(receipt, items)</code></td>
+<td>Save receipt and items atomically</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Usage</strong>:</p>
+<pre><code class="lang-csharp">var dbService = new DatabaseService(databasePath);
+
+// Get all receipts
+var receipts = await dbService.GetReceiptsAsync();
+
+// Save receipt with items (transactional)
+var receipt = new Receipt { StoreName = &quot;Store&quot; };
+var items = new List&lt;ReceiptItem&gt; 
+{ 
+    new ReceiptItem { ProductName = &quot;Item1&quot;, Price = 10m }
+};
+await dbService.SaveReceiptWithItemsAsync(receipt, items);
+
+// Get receipt with items
+var fullReceipt = await dbService.GetReceiptWithItemsAsync(1);
+</code></pre>
+<hr>
+<h2 id="viewmodels">ViewModels</h2>
+<h3 id="baseviewmodel">BaseViewModel</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/ViewModels/BaseViewModel.cs</code></p>
+<p><strong>Purpose</strong>: Base class for all ViewModels implementing <code>INotifyPropertyChanged</code>.</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Property change notifications for UI updates</li>
+<li>Helper methods for property management</li>
+<li>Automatic caller tracking using <code>[CallerMemberName]</code></li>
+</ul>
+<p><strong>Methods</strong>:</p>
+<ul>
+<li><code>SetProperty&lt;T&gt;(ref T storage, T value)</code>: Sets property and raises notification</li>
+<li><code>OnPropertyChanged(propertyName)</code>: Manually raises PropertyChanged event</li>
+</ul>
+<p><strong>Example Usage</strong>:</p>
+<pre><code class="lang-csharp">public class MyViewModel : BaseViewModel
+{
+    private string title;
+    
+    public string Title
+    {
+        get =&gt; this.title;
+        set =&gt; SetProperty(ref this.title, value);
+    }
+}
+</code></pre>
+<p><strong>How It Works</strong>:</p>
+<ol>
+<li><code>SetProperty</code> compares old and new values</li>
+<li>If different, updates backing field</li>
+<li>Calls <code>OnPropertyChanged</code> to notify UI</li>
+<li>UI bindings automatically update</li>
+</ol>
+<h3 id="mainviewmodel">MainViewModel</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/ViewModels/MainViewModel.cs</code></p>
+<p><strong>Purpose</strong>: ViewModel for the main counter application.</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Manages counter state</li>
+<li>Provides commands for user actions</li>
+<li>Updates UI text based on counter value</li>
+<li>Uses dependency injection for services</li>
+</ul>
+<p><strong>Properties</strong>:</p>
+<ul>
+<li><code>CounterText</code> (string): Display text for button</li>
+<li><code>IncrementCommand</code> (ICommand): Command for incrementing counter</li>
+</ul>
+<p><strong>Key Methods</strong>:</p>
+<ul>
+<li><code>OnIncrement()</code>: Executes when counter button is clicked</li>
+<li><code>UpdateCounterText()</code>: Updates display text based on count</li>
+</ul>
+<p><strong>Data Flow</strong>:</p>
+<pre><code>User clicks button
+         ?
+IncrementCommand executes
+         ?
+OnIncrement() called
+         ?
+CounterService.IncrementCount()
+         ?
+UpdateCounterText() called
+         ?
+CounterText property updated
+         ?
+UI automatically updates
+</code></pre>
+<p><strong>Example Implementation</strong>:</p>
+<pre><code class="lang-csharp">public MainViewModel(ICounterService counterService)
+{
+    this.counterService = counterService;
+    IncrementCommand = new Command(OnIncrement);
+    UpdateCounterText();
+}
+</code></pre>
+<hr>
+<h2 id="views">Views</h2>
+<h3 id="mainpage">MainPage</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/Views/MainPage.xaml</code> and <code>PlayGroundApp/Views/MainPage.xaml.cs</code></p>
+<p><strong>Purpose</strong>: Main application user interface.</p>
+<p><strong>XAML Structure</strong>:</p>
+<pre><code class="lang-xml">&lt;ContentPage&gt;
+    &lt;ScrollView&gt;
+        &lt;VerticalStackLayout&gt;
+            &lt;Image /&gt; &lt;!-- App logo --&gt;
+            &lt;Label /&gt; &lt;!-- Title --&gt;
+            &lt;Label /&gt; &lt;!-- Welcome text --&gt;
+            &lt;Button Command=&quot;{Binding IncrementCommand}&quot; 
+                    Text=&quot;{Binding CounterText}&quot; /&gt; &lt;!-- Counter button --&gt;
+        &lt;/VerticalStackLayout&gt;
+    &lt;/ScrollView&gt;
+&lt;/ContentPage&gt;
+</code></pre>
+<p><strong>Code-Behind</strong>:</p>
+<ul>
+<li>Resolves ViewModel from DI container</li>
+<li>Sets BindingContext for data binding</li>
+<li>No business logic (follows MVVM)</li>
+</ul>
+<p><strong>Bindings</strong>:</p>
+<ul>
+<li><code>Button.Text</code> ? <code>MainViewModel.CounterText</code></li>
+<li><code>Button.Command</code> ? <code>MainViewModel.IncrementCommand</code></li>
+</ul>
+<hr>
+<h2 id="database-design">Database Design</h2>
+<h3 id="schema">Schema</h3>
+<h4 id="receipts-table">Receipts Table</h4>
+<pre><code class="lang-sql">CREATE TABLE Receipts (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    StoreName TEXT,
+    PurchaseDate DATETIME,
+    ImagePath TEXT,
+    CreatedAt DATETIME
+);
+</code></pre>
+<h4 id="receiptitems-table">ReceiptItems Table</h4>
+<pre><code class="lang-sql">CREATE TABLE ReceiptItems (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ReceiptId INTEGER NOT NULL,
+    ProductName TEXT,
+    Price DECIMAL,
+    Category TEXT,
+    Quantity INTEGER
+);
+
+CREATE INDEX idx_ReceiptItems_ReceiptId ON ReceiptItems(ReceiptId);
+</code></pre>
+<h3 id="relationships">Relationships</h3>
+<p><strong>One-to-Many</strong>: Receipt ? ReceiptItems</p>
+<ul>
+<li>One receipt can have multiple items</li>
+<li>Foreign key: <code>ReceiptItem.ReceiptId</code> ? <code>Receipt.Id</code></li>
+<li>Index on <code>ReceiptId</code> for query performance</li>
+</ul>
+<hr>
+<h2 id="dependency-injection">Dependency Injection</h2>
+<h3 id="configuration">Configuration</h3>
+<p><strong>Location</strong>: <code>PlayGroundApp/MauiProgram.cs</code></p>
+<p><strong>Registered Services</strong>:</p>
+<pre><code class="lang-csharp">builder.Services.AddSingleton&lt;ICounterService, CounterService&gt;();
+builder.Services.AddSingleton&lt;MainViewModel&gt;();
+</code></pre>
+<p><strong>Service Lifetime</strong>:</p>
+<ul>
+<li><code>Singleton</code>: Single instance for application lifetime</li>
+<li><code>Transient</code>: New instance each time</li>
+<li><code>Scoped</code>: Single instance per scope</li>
+</ul>
+<h3 id="usage">Usage</h3>
+<p><strong>In Views</strong>:</p>
+<pre><code class="lang-csharp">var vm = MauiProgram.Services?.GetService&lt;MainViewModel&gt;();
+BindingContext = vm;
+</code></pre>
+<p><strong>In Services</strong>:</p>
+<pre><code class="lang-csharp">public MainViewModel(ICounterService counterService)
+{
+    this.counterService = counterService;
+}
+</code></pre>
+<hr>
+<h2 id="data-flow">Data Flow</h2>
+<h3 id="counter-example-flow">Counter Example Flow</h3>
+<pre><code>User Interface
+    ?
+[User clicks button]
+    ?
+MainPage.xaml button with Command binding
+    ?
+MainViewModel.IncrementCommand executes
+    ?
+MainViewModel.OnIncrement()
+    ?
+CounterService.IncrementCount()
+    ?
+CounterModel.Count++
+    ?
+UpdateCounterText()
+    ?
+CounterText property changed
+    ?
+PropertyChanged event fired
+    ?
+Binding updates
+    ?
+UI refreshes with new text
+</code></pre>
+<h3 id="database-save-flow">Database Save Flow</h3>
+<pre><code>ViewModel creates Receipt + Items
+    ?
+DatabaseService.SaveReceiptWithItemsAsync()
+    ?
+Begin Transaction
+    ?
+Insert Receipt ? get ID
+    ?
+Set ReceiptId on all Items
+    ?
+Insert all Items
+    ?
+Commit Transaction
+    ?
+Success or Rollback
+</code></pre>
+<hr>
+<h2 id="common-patterns">Common Patterns</h2>
+<h3 id="property-with-notification">Property with Notification</h3>
+<pre><code class="lang-csharp">private string title;
+
+public string Title
+{
+    get =&gt; this.title;
+    set =&gt; SetProperty(ref this.title, value);
+}
+</code></pre>
+<h3 id="command-binding">Command Binding</h3>
+<pre><code class="lang-csharp">public ICommand MyCommand { get; }
+
+public MyViewModel()
+{
+    MyCommand = new Command(OnMyCommand);
+}
+
+private void OnMyCommand()
+{
+    // Handle command execution
+}
+</code></pre>
+<h3 id="async-operation">Async Operation</h3>
+<pre><code class="lang-csharp">public async Task LoadDataAsync()
+{
+    var data = await databaseService.GetDataAsync();
+    // Update UI
+}
+</code></pre>
+<h3 id="transactional-operation">Transactional Operation</h3>
+<pre><code class="lang-csharp">public async Task SaveWithRelationsAsync()
+{
+    await databaseService.SaveReceiptWithItemsAsync(receipt, items);
+}
+</code></pre>
+<hr>
+<h2 id="best-practices-applied">Best Practices Applied</h2>
+<ol>
+<li><strong>Separation of Concerns</strong>: Each class has single responsibility</li>
+<li><strong>Dependency Injection</strong>: Loose coupling, easy testing</li>
+<li><strong>Async/Await</strong>: Non-blocking operations</li>
+<li><strong>MVVM Pattern</strong>: Testable, maintainable code</li>
+<li><strong>XML Documentation</strong>: Comprehensive code comments</li>
+<li><strong>Naming Conventions</strong>: Clear, descriptive names</li>
+<li><strong>Transactions</strong>: Data consistency</li>
+<li><strong>Navigation Properties</strong>: Easy relationship access</li>
+</ol>
+<hr>
+<h2 id="testing-considerations">Testing Considerations</h2>
+<h3 id="unit-testing-viewmodel">Unit Testing ViewModel</h3>
+<pre><code class="lang-csharp">[Test]
+public void IncrementCommand_IncrementsCounter()
+{
+    var mockService = new Mock&lt;ICounterService&gt;();
+    var viewModel = new MainViewModel(mockService.Object);
+    
+    viewModel.IncrementCommand.Execute(null);
+    
+    mockService.Verify(s =&gt; s.IncrementCount(), Times.Once);
+}
+</code></pre>
+<h3 id="integration-testing-database">Integration Testing Database</h3>
+<pre><code class="lang-csharp">[Test]
+public async Task SaveReceiptWithItems_CreatesRelation()
+{
+    var dbService = new DatabaseService(dbPath);
+    var receipt = new Receipt { StoreName = &quot;Test&quot; };
+    var items = new List&lt;ReceiptItem&gt; { /* items */ };
+    
+    await dbService.SaveReceiptWithItemsAsync(receipt, items);
+    
+    var loaded = await dbService.GetReceiptWithItemsAsync(receipt.Id);
+    Assert.AreEqual(loaded.Items.Count, items.Count);
+}
+</code></pre>
+<hr>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<ol>
+<li><strong>Indexing</strong>: ReceiptId is indexed for fast queries</li>
+<li><strong>Async Operations</strong>: Database calls don't block UI</li>
+<li><strong>Lazy Loading</strong>: Load related data only when needed</li>
+<li><strong>Property Change Throttling</strong>: Avoid excessive notifications</li>
+</ol>
+<hr>
+<h2 id="security-considerations">Security Considerations</h2>
+<ol>
+<li><strong>SQL Injection</strong>: SQLite-net-pcl uses parameterized queries</li>
+<li><strong>Data Validation</strong>: Validate input in ViewModels/Services</li>
+<li><strong>Authentication</strong>: Implement if needed</li>
+<li><strong>Data Encryption</strong>: Consider for sensitive data</li>
+</ol>
+<hr>
+<h2 id="future-enhancements">Future Enhancements</h2>
+<ol>
+<li>Add MVVM Toolkit for advanced patterns</li>
+<li>Implement data encryption</li>
+<li>Add cloud synchronization</li>
+<li>Add unit test suite</li>
+<li>Implement offline-first architecture</li>
+<li>Add advanced search/filtering</li>
+<li>Implement push notifications</li>
+</ol>
+<hr>
+<p><strong>Last Updated</strong>: 2025-01-13
+<strong>Version</strong>: 1.0.0</p>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/iwanlenin/Playground/blob/main/CODE_DOCUMENTATION.md/#L1" class="contribution-link">Edit this page</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

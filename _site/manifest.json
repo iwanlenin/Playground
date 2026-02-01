@@ -1,0 +1,36 @@
+{
+  "sitemap": {
+    "baseUrl": "https://github.com/iwanlenin/Playground/",
+    "changefreq": "weekly",
+    "priority": 1
+  },
+  "source_base_path": "C:/Development/VibeCoding/CSharpPlayground/PlayGroundApp",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "CODE_DOCUMENTATION.md",
+      "output": {
+        ".html": {
+          "relative_path": "CODE_DOCUMENTATION.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "README.md",
+      "output": {
+        ".html": {
+          "relative_path": "README.html"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

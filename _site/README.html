@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>PlayGround App </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="PlayGround App ">
+    
+    
+      <link rel="shortcut icon" href="favicon.ico">
+      <link rel="stylesheet" href="styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="styles/docfx.css">
+      <link rel="stylesheet" href="styles/main.css">
+      <meta property="docfx:navrel" content="">
+      <meta property="docfx:tocrel" content="">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="playground-app">PlayGround App</h1>
+
+<p>A modern .NET MAUI application demonstrating a complete MVVM architecture with receipt management and SQLite database integration.</p>
+<h2 id="-project-overview">?? Project Overview</h2>
+<p><strong>PlayGround App</strong> is a .NET MAUI (Multi-platform App UI) application built with .NET 10, showcasing best practices in:</p>
+<ul>
+<li><strong>MVVM Pattern</strong>: Complete Model-View-ViewModel implementation with proper separation of concerns</li>
+<li><strong>Dependency Injection</strong>: Service-based architecture using Microsoft's DI container</li>
+<li><strong>Data Persistence</strong>: SQLite database integration with async operations</li>
+<li><strong>Property Change Notifications</strong>: Automatic UI updates using <code>INotifyPropertyChanged</code></li>
+</ul>
+<h2 id="-key-features">?? Key Features</h2>
+<h3 id="1-counter-application">1. Counter Application</h3>
+<ul>
+<li>Simple counter functionality demonstrating MVVM pattern</li>
+<li>Increment button with automatic text updates</li>
+<li>Service-based state management</li>
+</ul>
+<h3 id="2-receipt-management">2. Receipt Management</h3>
+<ul>
+<li>Receipt CRUD operations (Create, Read, Update, Delete)</li>
+<li>Receipt items with one-to-many relationships</li>
+<li>Transactional database operations</li>
+<li>Async/await patterns for database access</li>
+</ul>
+<h2 id="-architecture">??? Architecture</h2>
+<pre><code>PlayGroundApp/
+??? Models/                    # Data models
+?   ??? Receipt.cs            # Receipt entity
+?   ??? ReceiptItem.cs        # Receipt item entity
+?   ??? CounterModel.cs       # Counter model
+??? Views/                    # XAML pages
+?   ??? MainPage.xaml         # Main application view
+??? ViewModels/               # View models
+?   ??? BaseViewModel.cs      # Base class with INotifyPropertyChanged
+?   ??? MainViewModel.cs      # Main page view model
+??? Services/                 # Business logic
+?   ??? ICounterService.cs    # Counter service interface
+?   ??? CounterService.cs     # Counter service implementation
+?   ??? DatabaseService.cs    # Database operations
+??? Resources/                # App resources
+</code></pre>
+<h2 id="-technology-stack">?? Technology Stack</h2>
+<ul>
+<li><strong>.NET 10</strong> - Latest .NET framework</li>
+<li><strong>.NET MAUI</strong> - Cross-platform UI framework</li>
+<li><strong>SQLite</strong> - Lightweight database</li>
+<li><strong>MVVM Pattern</strong> - UI architecture</li>
+<li><strong>Dependency Injection</strong> - Service management</li>
+</ul>
+<h2 id="-prerequisites">?? Prerequisites</h2>
+<ul>
+<li><strong>.NET 10 SDK</strong> - <a href="https://dotnet.microsoft.com/download/dotnet/10.0">Download</a></li>
+<li><strong>Visual Studio 2022</strong> (recommended) or <strong>Visual Studio Code</strong></li>
+<li><strong>Git</strong> - For version control</li>
+</ul>
+<h2 id="-getting-started">?? Getting Started</h2>
+<h3 id="1-clone-the-repository">1. Clone the Repository</h3>
+<pre><code class="lang-bash">git clone https://github.com/iwanlenin/Playground.git
+cd Playground
+</code></pre>
+<h3 id="2-restore-dependencies">2. Restore Dependencies</h3>
+<pre><code class="lang-bash">dotnet restore
+</code></pre>
+<h3 id="3-build-the-project">3. Build the Project</h3>
+<pre><code class="lang-bash">dotnet build
+</code></pre>
+<h3 id="4-run-the-application">4. Run the Application</h3>
+<pre><code class="lang-bash"># Run on Windows
+dotnet run --project PlayGroundApp/PlayGroundApp.csproj -f net10.0-windows
+
+# Run on Android
+dotnet run --project PlayGroundApp/PlayGroundApp.csproj -f net10.0-android
+
+# Run on iOS
+dotnet run --project PlayGroundApp/PlayGroundApp.csproj -f net10.0-ios
+
+# Run on macOS
+dotnet run --project PlayGroundApp/PlayGroundApp.csproj -f net10.0-maccatalyst
+</code></pre>
+<h2 id="-project-structure">?? Project Structure</h2>
+<h3 id="models">Models</h3>
+<ul>
+<li><strong>Receipt</strong>: Represents a purchase receipt with store name, purchase date, and image</li>
+<li><strong>ReceiptItem</strong>: Individual items on a receipt with product details and quantity</li>
+<li><strong>CounterModel</strong>: Simple counter value holder</li>
+</ul>
+<h3 id="views">Views</h3>
+<ul>
+<li><strong>MainPage</strong>: Main application view with counter demonstration</li>
+</ul>
+<h3 id="viewmodels">ViewModels</h3>
+<ul>
+<li><strong>BaseViewModel</strong>: Provides <code>INotifyPropertyChanged</code> implementation for all view models</li>
+<li><strong>MainViewModel</strong>: Manages counter state and user interactions</li>
+</ul>
+<h3 id="services">Services</h3>
+<ul>
+<li><strong>ICounterService</strong>: Interface defining counter operations</li>
+<li><strong>CounterService</strong>: Implements counter logic</li>
+<li><strong>DatabaseService</strong>: Handles all database operations (CRUD) with async support</li>
+</ul>
+<h2 id="-database">?? Database</h2>
+<h3 id="sqlite-tables">SQLite Tables</h3>
+<h4 id="receipts-table">Receipts Table</h4>
+<pre><code class="lang-sql">CREATE TABLE Receipts (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    StoreName TEXT,
+    PurchaseDate DATETIME,
+    ImagePath TEXT,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+</code></pre>
+<h4 id="receiptitems-table">ReceiptItems Table</h4>
+<pre><code class="lang-sql">CREATE TABLE ReceiptItems (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ReceiptId INTEGER NOT NULL,
+    ProductName TEXT,
+    Price DECIMAL,
+    Category TEXT,
+    Quantity INTEGER DEFAULT 1,
+    FOREIGN KEY (ReceiptId) REFERENCES Receipts(Id)
+);
+</code></pre>
+<h2 id="-development">?? Development</h2>
+<h3 id="adding-new-features">Adding New Features</h3>
+<ol>
+<li><strong>Create a Model</strong> in <code>Models/</code> folder</li>
+<li><strong>Implement Database Service</strong> in <code>Services/</code> folder</li>
+<li><strong>Create ViewModel</strong> in <code>ViewModels/</code> folder</li>
+<li><strong>Design View</strong> in <code>Views/</code> folder with XAML</li>
+</ol>
+<h3 id="code-style">Code Style</h3>
+<ul>
+<li>Use <code>this.</code> prefix for private fields (no underscore convention)</li>
+<li>Follow XML documentation comments for all public members</li>
+<li>Use <code>async/await</code> for all I/O operations</li>
+<li>Implement <code>INotifyPropertyChanged</code> in all view models</li>
+</ul>
+<h2 id="-testing">?? Testing</h2>
+<h3 id="build-in-debug-mode">Build in Debug Mode</h3>
+<pre><code class="lang-bash">dotnet build -c Debug
+</code></pre>
+<h3 id="build-in-release-mode">Build in Release Mode</h3>
+<pre><code class="lang-bash">dotnet build -c Release
+</code></pre>
+<h2 id="-documentation">?? Documentation</h2>
+<ul>
+<li><strong>README.md</strong> - This file (setup and overview)</li>
+<li><strong>CODE_DOCUMENTATION.md</strong> - Detailed architecture and code documentation</li>
+<li><strong>Generated API Docs</strong> - Automatically generated when building in Release mode</li>
+</ul>
+<p>Documentation is automatically generated during Release builds using DocFX.</p>
+<h2 id="-release-build">?? Release Build</h2>
+<p>To create a release build with automatic documentation generation:</p>
+<pre><code class="lang-bash">dotnet build -c Release
+</code></pre>
+<p>This will:</p>
+<ol>
+<li>Compile the project in Release mode</li>
+<li>Generate API documentation</li>
+<li>Create markdown documentation</li>
+<li>Output documentation to <code>docs/</code> folder</li>
+</ol>
+<h2 id="-contributing">?? Contributing</h2>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch (<code>git checkout -b feature/AmazingFeature</code>)</li>
+<li>Commit your changes (<code>git commit -m 'Add AmazingFeature'</code>)</li>
+<li>Push to the branch (<code>git push origin feature/AmazingFeature</code>)</li>
+<li>Open a Pull Request</li>
+</ol>
+<h2 id="-license">?? License</h2>
+<p>This project is licensed under the MIT License - see the LICENSE file for details.</p>
+<h2 id="-author">????? Author</h2>
+<p><a href="https://github.com/iwanlenin">iwanlenin</a></p>
+<h2 id="-links">?? Links</h2>
+<ul>
+<li><a href="https://docs.microsoft.com/dotnet/">.NET Documentation</a></li>
+<li><a href="https://learn.microsoft.com/maui/">MAUI Documentation</a></li>
+<li><a href="https://www.sqlite.org/docs.html">SQLite Documentation</a></li>
+<li><a href="https://learn.microsoft.com/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern">MVVM Pattern</a></li>
+</ul>
+<h2 id="-support">?? Support</h2>
+<p>For issues and questions, please open an issue on <a href="https://github.com/iwanlenin/Playground/issues">GitHub Issues</a>.</p>
+<hr>
+<p><strong>Last Updated</strong>: 2025-01-13
+<strong>Version</strong>: 1.0.0</p>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/iwanlenin/Playground/blob/main/README.md/#L1" class="contribution-link">Edit this page</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
