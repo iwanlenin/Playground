@@ -69,4 +69,10 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<!-- Post-Build Event for Release Configuration - Generate Documentation -->
+	<Target Name="GenerateDocumentation" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+		<Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File $(MSBuildProjectDirectory)\..\GenerateDocumentation.ps1 -ProjectPath $(MSBuildProjectDirectory)\.. -Configuration $(Configuration)" />
+	</Target>
+
 </Project>
+
